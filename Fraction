@@ -1,0 +1,125 @@
+#include <iostream>
+#include <cmath>
+#include <stdexcept>
+
+using namespace std;
+
+int nod(int a, int b) {
+	return (a==0) ? b : nod(b%a, a);
+}
+
+int nok(int a, int b) {
+	return (a/(nod(a,b)*b));
+}
+
+class Fraction {
+	int n, d;
+	void reduce() {
+		int gcd = nod(n, d);
+		n /= gcd;
+		d /= gcd;
+		if (d < 0) {
+			n = -n;
+			d = -d;
+		}
+	}
+public:
+	Fraction(int num, int denom) : n(num), d(denom) {
+		reduce();
+		if(denom == 0)
+			throw invalid_argument("Division by zero is not possible!");
+	}
+	Fraction(int wholePart) : n(wholePart), d(1) {}
+	friend ostream& operator<<(ostream& out, const Fraction& f) {
+		switch(f.d) {
+			case 1:	
+				if (f.d == 1)
+					out << f.n;
+				break;
+			/*case 0:
+				if (f.d == 0) 
+					out << "Division by zero is not possible!";
+				break;*/
+			default:
+				out << f.n << "/" << f.d;
+				break;
+		}
+	}
+
+	friend Fraction operator^(Fraction& f, int y) {
+		int nom = 1;
+		int denom = 1;
+		switch(y) {
+			case 0: 
+				return Fraction(1, 1);
+				break;
+			case 1: 
+				return Fraction(f.n, f.d);
+				break;
+			default:
+				for (int i = 2; i < y+2; i++) {
+					nom *= f.n;
+					denom *= f.d;
+				}
+				return Fraction(nom, denom);
+				break;	
+		}
+	}
+	Fraction operator+(const Fraction& f) const {
+		return Fraction(n*f.d + f.n*d, f.d*d);
+	}
+	Fraction operator-(const Fraction& f) const {
+		return Fraction(n*f.d - f.n*d, f.d*d);
+	}
+	Fraction operator*(const Fraction& f) const {
+		return Fraction(n*f.n, d*f.d);
+	}
+	Fraction operator/(const Fraction& f) const {
+		return Fraction(n*f.d, d*f.n);
+	}
+	Fraction operator+=(const Fraction& f) const {
+		return Fraction(f.n + f.n, f.d);
+	}
+	friend bool operator>(const Fraction& a, const Fraction& b) {
+		return (a.n*b.d > b.n*a.d);
+	}
+	friend bool operator>=(const Fraction& a, const Fraction& b) {
+		return (a.n*b.d >= b.n*a.d);
+	}
+	friend bool operator<=(const Fraction& a, const Fraction& b) {
+		return (a.n*b.d <= b.n*a.d);
+	}
+	friend bool operator!=(const Fraction& a, const Fraction& b) {
+		return (a.n*b.d != b.n*a.d);
+	}
+	friend bool operator==(const Fraction& a, const Fraction& b) {
+		return (a.n*b.d == b.n*a.d);
+	}
+	friend bool operator<(const Fraction& a, const Fraction& b) {
+		return (a.n*b.d < b.n*a.d);
+	}
+};
+
+int main() {
+	Fraction a(1,3), b(1,5), c(2,18), d(4,2), e(2,5), f(1,2)/*, g(5,0)*/;
+	cout << "\n";
+	cout << "a = " << a << " b = " << b << " c = " << c << " d = " << d << " e = " << e << " f = " << f /* << " g = " << g */<< endl;
+	cout << "\n";
+	cout << "a + c = " << a << " + " << c << " = " << a+c << endl;
+	cout << "d - b = " << d << " - " << b << " = " << d-b << endl;
+	cout << "c * e = " << c << " * " << e << " = " << c*e << endl;
+	cout << "c / d = " << c << " / " << d << " = " << c/d << endl;
+	cout << "d < a = " << d << " < " << a << " = " << (d<a) << endl;
+	cout << "d > a = " << d << " > " << a << " = " << (d>a) << endl;
+	cout << "f >= f = " << f << " >= " << f << " = " << (f>=f) << endl;
+	cout << "f <= a = " << f << " <= " << a << " = " << (f<=a) << endl;
+	cout << "c != d = " << c << " != " << d << " = " << (c!=d) << endl;
+	cout << "c == d = " << c << " == " << d << " = " << (c==d) << endl;
+	cout << "a\xc2\xb2 = " << (a^2) << endl;
+	/*cout << "d^10 = " << (d^(10)) << endl;
+	cout << "f^10 = " << (f^10) << endl;*/
+	cout << "a^3 = " << (a^3) << endl;
+	cout << "a^0 = " << (a^0) << endl;
+	cout << "a^1 = " << (a^1) << endl;
+	cout << "d^10 = " << (d^10) << endl;
+}
