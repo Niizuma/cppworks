@@ -9,7 +9,7 @@ int nod(int a, int b) {
 }
 
 int nok(int a, int b) {
-	return (a/(nod(a,b)*b));
+	return a*b/nod(a,b);
 }
 
 class Fraction {
@@ -29,12 +29,13 @@ public:
 		if(denom == 0)
 			throw invalid_argument("Division by zero is not possible!");
 	}
+			
+	
 	Fraction(int wholePart) : n(wholePart), d(1) {}
 	friend ostream& operator<<(ostream& out, const Fraction& f) {
 		switch(f.d) {
 			case 1:	
-				if (f.d == 1)
-					out << f.n;
+				out << f.n;
 				break;
 			/*case 0:
 				if (f.d == 0) 
@@ -57,7 +58,7 @@ public:
 				return Fraction(f.n, f.d);
 				break;
 			default:
-				for (int i = 2; i < y+2; i++) {
+				for (int i = 0; i < y; i++) {
 					nom *= f.n;
 					denom *= f.d;
 				}
@@ -65,6 +66,8 @@ public:
 				break;	
 		}
 	}
+	
+
 	Fraction operator+(const Fraction& f) const {
 		return Fraction(n*f.d + f.n*d, f.d*d);
 	}
@@ -98,6 +101,66 @@ public:
 	friend bool operator<(const Fraction& a, const Fraction& b) {
 		return (a.n*b.d < b.n*a.d);
 	}
+	friend double operator*(const Fraction& f, double x) {
+		return (double)f.n/f.d*x;
+	} 
+	friend double operator+(const Fraction& f, double x) {
+		return (double)f.n/f.d+x;
+	} 
+	friend double operator-(const Fraction& f, double x) {
+		return (double)f.n/f.d-x;
+	} 
+	friend double operator/(const Fraction& f, double x) {
+		return (double)f.n/f.d / x;
+	} 
+	friend bool operator<(const Fraction& f, double x) {
+		return (double)f.n/f.d < x;
+	} 
+	friend bool operator>(const Fraction& f, double x) {
+		return (double)f.n/f.d > x;
+	} 
+	friend bool operator==(const Fraction& f, double x) {
+		return (double)f.n/f.d == x;
+	} 
+	friend bool operator!=(const Fraction& f, double x) {
+		return (double)f.n/f.d != x;
+	} 
+	friend double operator>=(const Fraction& f, double x) {
+		return (double)f.n/f.d >= x;
+	} 
+	friend double operator<=(const Fraction& f, double x) {
+		return (double)f.n/f.d <= x;
+	} 
+	friend double operator*(double x, const Fraction& f) {
+		return x*(double)f.n/f.d;
+	} 
+	friend double operator+(double x, const Fraction& f) {
+		return x+(double)f.n/f.d;
+	} 
+	friend double operator-(double x, const Fraction& f) {
+		return x-(double)f.n/f.d;
+	} 
+	friend double operator/(double x, const Fraction& f) {
+		return x / (double)f.n/f.d;
+	} 
+	friend bool operator<(double x, const Fraction& f) {
+		return x<(double)f.n/f.d;
+	} 
+	friend bool operator>(double x, const Fraction& f) {
+		return x>(double)f.n/f.d;
+	} 
+	friend bool operator==(double x, const Fraction& f) {
+		return x==(double)f.n/f.d;
+	} 
+	friend bool operator!=(double x, const Fraction& f) {
+		return x!=(double)f.n/f.d;
+	} 
+	friend double operator>=(double x, const Fraction& f) {
+		return x>=(double)f.n/f.d;
+	} 
+	friend double operator<=(double x, const Fraction& f) {
+		return x<=(double)f.n/f.d;
+	} 
 };
 
 int main() {
@@ -116,10 +179,21 @@ int main() {
 	cout << "c != d = " << c << " != " << d << " = " << (c!=d) << endl;
 	cout << "c == d = " << c << " == " << d << " = " << (c==d) << endl;
 	cout << "a\xc2\xb2 = " << (a^2) << endl;
-	/*cout << "d^10 = " << (d^(10)) << endl;
-	cout << "f^10 = " << (f^10) << endl;*/
 	cout << "a^3 = " << (a^3) << endl;
 	cout << "a^0 = " << (a^0) << endl;
 	cout << "a^1 = " << (a^1) << endl;
 	cout << "d^10 = " << (d^10) << endl;
+	cout << "НОК(10,15) = " << nok(10,15) << endl;
+	cout << "НОК(2,6) = " << nok(2,6) << endl;
+	cout << "a * 5.4 = " << a*5.4 << endl;
+	cout << "a + 5.4 = " << a+5.4 << endl;
+	cout << "a - 5.4 = " << a-5.4 << endl;
+	cout << "a / 5.4 = " << a/5.4 << endl;
+	cout << "f > 0.2 = " << (f>0.2) << endl;
+	cout << "f < 0.2 = " << (f<0.2) << endl;
+	cout << "f == 0.5 = " << (f==0.5) << endl;
+	cout << "f != 0.2 = " << (f!=0.2) << endl;
+	cout << "f >= 0.5 = " << (f>=0.5) << endl;
+	cout << "f <= 0.2 = " << (f<=0.2) << endl;
+	cout << "0.2 <= f = " << (0.2<=f) << endl;
 }
